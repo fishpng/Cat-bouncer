@@ -8,3 +8,4 @@ please also read the "READ ME" file in catbouncer for instructions!
 
 (the BSOD is fake btw)
 
+FYI there are alot of bugs in this, im sorry if it screws everything up
