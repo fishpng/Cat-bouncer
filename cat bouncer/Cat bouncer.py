@@ -2,12 +2,12 @@ import os
 import random
 import tkinter as tk
 from tkinter import simpledialog, messagebox
-from PIL import Image, ImageTk  # 🔹 added
 
 # === CONFIG ===
-CAT_FOLDER = r"C:\Users\S0156051\OneDrive - St Joseph's College, Gregory Terrace\cat picturs"
+CAT_FOLDER = r"please put file location here"
 FPS_MS = 16
-SCALE_FACTOR = 0.5  # 🔹 custom scaling (0.5 = half, 1.0 = original, 2.0 = double)
+SCALE_NUMERATOR = 1    # for zoom (≥1, e.g. 2 = double size)
+SCALE_DENOMINATOR = 2  # for shrink (≥1, e.g. 2 = half size)
 
 def pick_speed():
     speed = random.randint(3, 7)
@@ -19,14 +19,15 @@ class BounceCat:
         self.root = root
         self.img_path = img_path
 
-        # 🔹 Load image and apply custom scaling
-        pil_img = Image.open(img_path)
-        if SCALE_FACTOR != 1.0:
-            new_w = int(pil_img.width * SCALE_FACTOR)
-            new_h = int(pil_img.height * SCALE_FACTOR)
-            pil_img = pil_img.resize((new_w, new_h), Image.LANCZOS)
+        # Load image
+        self.tk_img = tk.PhotoImage(file=img_path)
 
-        self.tk_img = ImageTk.PhotoImage(pil_img)
+        # Apply scaling
+        if SCALE_NUMERATOR > 1:
+            self.tk_img = self.tk_img.zoom(SCALE_NUMERATOR, SCALE_NUMERATOR)
+        if SCALE_DENOMINATOR > 1:
+            self.tk_img = self.tk_img.subsample(SCALE_DENOMINATOR, SCALE_DENOMINATOR)
+
         self.w, self.h = self.tk_img.width(), self.tk_img.height()
 
         # Create Toplevel window
